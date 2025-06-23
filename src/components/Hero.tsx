@@ -1,62 +1,50 @@
 import { useEffect, useRef } from "react";
 import { Linkedin, Github } from "lucide-react";
 import TypewriterEffect from "./TypewriterEffect";
+import * as THREE from "three";
+import WAVES from "vanta/dist/vanta.waves.min";
 
 const Hero = () => {
-  // Reference for wave animation
-  const waveRef = useRef<SVGPathElement | null>(null);
+  const vantaRef = useRef<HTMLDivElement>(null);
+  const vantaEffect = useRef<any>(null);
 
-  // Animate the wave
   useEffect(() => {
-    let frame = 0;
-    let raf: number;
-    const animate = () => {
-      if (waveRef.current) {
-        // Animate the wave path using a simple sine function
-        const amplitude = 16;
-        const frequency = 0.012;
-        let path = "M 0 80 Q ";
-        for (let i = 0; i <= 1440; i += 80) {
-          const dx = i;
-          const dy =
-            80 +
-            Math.sin((frame * 0.08 + i) * frequency) * amplitude +
-            Math.cos((frame * 0.07 + i) * frequency) * amplitude * 0.5;
-          path += `${dx} ${dy}, `;
-        }
-        path += "1440 80 L 1440 160 L 0 160 Z";
-        waveRef.current.setAttribute("d", path);
+    if (!vantaEffect.current && vantaRef.current) {
+      vantaEffect.current = WAVES({
+        el: vantaRef.current,
+        THREE,
+        mouseControls: false,
+        touchControls: false,
+        minHeight: 300.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x73e8fa,
+        shininess: 50.00,
+        waveHeight: 12,
+        waveSpeed: 0.5,
+        zoom: 1.1,
+        backgroundColor: 0xffffff,
+      });
+    }
+    return () => {
+      if (vantaEffect.current) {
+        vantaEffect.current.destroy();
+        vantaEffect.current = null;
       }
-      frame++;
-      raf = requestAnimationFrame(animate);
     };
-    raf = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
     <section className="w-full min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
-      {/* Animated Wave Aura */}
-      <div className="absolute top-0 left-0 w-full" style={{ zIndex: 1 }}>
-        <svg width="100%" height={160} viewBox="0 0 1440 160">
-          <defs>
-            <linearGradient id="hero-wave" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop stopColor="#73e8fa" />
-              <stop offset="0.5" stopColor="#a1c4fd" />
-              <stop offset="1" stopColor="#00c6fb" />
-            </linearGradient>
-          </defs>
-          <path
-            ref={waveRef}
-            fill="url(#hero-wave)"
-            fillOpacity="0.7"
-            d="M 0 80 Q 360 80, 720 80 Q 1080 80, 1440 80 L 1440 160 L 0 160 Z"
-          />
-        </svg>
-      </div>
-
+      {/* Vanta Wave Aura */}
+      <div
+        ref={vantaRef}
+        className="absolute top-0 left-0 w-full h-[350px] z-0"
+        style={{ pointerEvents: "none" }}
+      />
       {/* Content */}
-      <div className="relative flex flex-col items-center justify-center pt-40 pb-20" style={{ zIndex: 2 }}>
+      <div className="relative flex flex-col items-center justify-center pt-40 pb-20 z-10">
         {/* Profile Picture */}
         <div className="mb-6">
           <img
@@ -71,11 +59,10 @@ const Hero = () => {
           Riya JAIN
         </h1>
 
-        {/* Full Stack (static) + Developer (typing effect) */}
+        {/* Typing "Full Stack Developer" */}
         <h2 className="text-xl md:text-2xl text-gray-700 font-light mb-8 flex flex-row items-center justify-center">
-          Full Stack&nbsp;
           <span className="text-blue-500 font-semibold">
-            <TypewriterEffect text="Developer" speed={50} delay={500} />
+            <TypewriterEffect text="Full Stack Developer" speed={60} delay={400} />
           </span>
         </h2>
 
