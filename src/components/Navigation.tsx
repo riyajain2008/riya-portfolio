@@ -68,13 +68,6 @@ const Navigation = () => {
             </button>
           </div>
 
-          {/* Download Resume Button */}
-          <a 
-            href="#"
-            className="px-6 py-2 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors duration-300 shadow-md"
-          >
-            Download Resume
-          </a>
         </div>
       </div>
     </nav>
