@@ -1,69 +1,105 @@
-import { Linkedin, Github } from 'lucide-react';
-import TypewriterEffect from './TypewriterEffect';
+import { useEffect, useRef } from "react";
+import { Linkedin, Github } from "lucide-react";
+import TypewriterEffect from "./TypewriterEffect";
 
 const Hero = () => {
+  // Reference for wave animation
+  const waveRef = useRef<SVGPathElement | null>(null);
+
+  // Animate the wave
+  useEffect(() => {
+    let frame = 0;
+    let raf: number;
+    const animate = () => {
+      if (waveRef.current) {
+        // Animate the wave path using a simple sine function
+        const amplitude = 16;
+        const frequency = 0.012;
+        let path = "M 0 80 Q ";
+        for (let i = 0; i <= 1440; i += 80) {
+          const dx = i;
+          const dy =
+            80 +
+            Math.sin((frame * 0.08 + i) * frequency) * amplitude +
+            Math.cos((frame * 0.07 + i) * frequency) * amplitude * 0.5;
+          path += `${dx} ${dy}, `;
+        }
+        path += "1440 80 L 1440 160 L 0 160 Z";
+        waveRef.current.setAttribute("d", path);
+      }
+      frame++;
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   return (
-    <section className="relative h-screen flex flex-col items-center justify-center bg-[#0A0B22] overflow-hidden">
-      {/* Aura/Wave Animation */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* SVG Aura, you can enhance or replace with your AuroraBackground */}
-        <svg width="100%" height="100%" viewBox="0 0 1440 400" preserveAspectRatio="none" className="w-full h-[40vh] md:h-[60vh]">
+    <section className="w-full min-h-screen flex flex-col items-center justify-center bg-white relative overflow-hidden">
+      {/* Animated Wave Aura */}
+      <div className="absolute top-0 left-0 w-full" style={{ zIndex: 1 }}>
+        <svg width="100%" height={160} viewBox="0 0 1440 160">
           <defs>
-            <linearGradient id="auraGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+            <linearGradient id="hero-wave" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop stopColor="#73e8fa" />
               <stop offset="0.5" stopColor="#a1c4fd" />
               <stop offset="1" stopColor="#00c6fb" />
             </linearGradient>
           </defs>
           <path
-            d="M0,200 C400,320 1040,80 1440,220 L1440,400 L0,400 Z"
-            fill="url(#auraGradient)"
-            fillOpacity="0.8"
+            ref={waveRef}
+            fill="url(#hero-wave)"
+            fillOpacity="0.7"
+            d="M 0 80 Q 360 80, 720 80 Q 1080 80, 1440 80 L 1440 160 L 0 160 Z"
           />
         </svg>
       </div>
 
-      {/* Profile Picture */}
-      <div className="z-10 mb-4">
-        <img
-          src="/lovable-uploads/817b4d92-bb22-44fe-9fa9-72332b6a5669.png"
-          alt="Riya Jain"
-          className="w-28 h-28 mx-auto rounded-full border-4 border-white shadow-lg bg-white object-cover"
-        />
-      </div>
+      {/* Content */}
+      <div className="relative flex flex-col items-center justify-center pt-40 pb-20" style={{ zIndex: 2 }}>
+        {/* Profile Picture */}
+        <div className="mb-6">
+          <img
+            src="/lovable-uploads/817b4d92-bb22-44fe-9fa9-72332b6a5669.png"
+            alt="Riya Jain"
+            className="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover bg-white"
+          />
+        </div>
 
-      {/* Name */}
-      <h1 className="z-10 text-4xl md:text-6xl font-extrabold text-white mb-2 text-center">
-        Riya JAIN
-      </h1>
+        {/* Name */}
+        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-2 text-center">
+          Riya JAIN
+        </h1>
 
-      {/* Typewriter Title */}
-      <h2 className="z-10 text-2xl md:text-3xl text-white font-light mb-6 text-center">
-        Full Stack <span className="text-blue-400 font-semibold">
-          <TypewriterEffect text="Developer" speed={50} delay={500} />
-        </span>
-      </h2>
+        {/* Full Stack (static) + Developer (typing effect) */}
+        <h2 className="text-xl md:text-2xl text-gray-700 font-light mb-8 flex flex-row items-center justify-center">
+          Full Stack&nbsp;
+          <span className="text-blue-500 font-semibold">
+            <TypewriterEffect text="Developer" speed={50} delay={500} />
+          </span>
+        </h2>
 
-      {/* Social Icons */}
-      <div className="z-10 flex gap-6 mt-2">
-        <a
-          href="https://www.linkedin.com/in/riyajain8991/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-white hover:text-blue-400 transition"
-          aria-label="LinkedIn"
-        >
-          <Linkedin size={28} />
-        </a>
-        <a
-          href="https://github.com/riyajain2008"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-white hover:text-blue-400 transition"
-          aria-label="GitHub"
-        >
-          <Github size={28} />
-        </a>
+        {/* Social Icons */}
+        <div className="flex gap-8 mt-2">
+          <a
+            href="https://www.linkedin.com/in/riyajain8991/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-700 hover:text-blue-500 transition"
+            aria-label="LinkedIn"
+          >
+            <Linkedin size={28} />
+          </a>
+          <a
+            href="https://github.com/riyajain2008"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-700 hover:text-blue-500 transition"
+            aria-label="GitHub"
+          >
+            <Github size={28} />
+          </a>
+        </div>
       </div>
     </section>
   );
