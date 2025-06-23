@@ -39,7 +39,7 @@ const Hero = () => {
           </h1>
           
           <h2 className="text-xl md:text-2xl lg:text-3xl text-slate-600 font-light mb-8 h-12">
-            <TypewriterEffect text="Full Stack Developer" speed={150} delay={1000} />
+            <TypewriterEffect text="Full Stack Developer" speed={50} delay={1000} />
           </h2>
 
           {/* Tagline */}
