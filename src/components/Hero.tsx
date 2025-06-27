@@ -1,81 +1,64 @@
-import { useEffect, useRef } from "react";
-import WAVES from "vanta/dist/vanta.waves.min";
-import * as THREE from "three";
-import { Linkedin, Github } from "lucide-react";
-import TypewriterEffect from "./TypewriterEffect";
+
+import { useEffect, useState } from 'react';
+import AuroraBackground from './AuroraBackground';
+import TypewriterEffect from './TypewriterEffect';
 
 const Hero = () => {
-  const vantaRef = useRef<HTMLDivElement>(null);
-  const vantaEffect = useRef<any>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (!vantaEffect.current && vantaRef.current) {
-      vantaEffect.current = WAVES({
-        el: vantaRef.current,
-        THREE: THREE,
-        mouseControls: false,
-        touchControls: false,
-        minHeight: 330,
-        minWidth: 200,
-        color: 0x73e8fa,
-        shininess: 80,
-        waveHeight: 26,
-        waveSpeed: 0.45,
-        zoom: 0.95,
-        backgroundColor: 0xffffff,
-      });
-    }
-    return () => {
-      if (vantaEffect.current) {
-        vantaEffect.current.destroy();
-        vantaEffect.current = null;
-      }
-    };
+    setIsVisible(true);
   }, []);
 
   return (
-    <section className="relative w-full min-h-screen flex flex-col items-center justify-center bg-white overflow-hidden">
-      {/* Vanta.js Animated Wave */}
-      <div
-        ref={vantaRef}
-        className="absolute top-0 left-0 w-full h-[330px] z-0"
-        style={{ pointerEvents: "none" }}
-      />
-
+    <section className="relative h-screen flex items-center justify-center overflow-hidden bg-cream-50">
+      <AuroraBackground />
+      
       {/* Content */}
-      <div className="relative flex flex-col items-center justify-center pt-44 pb-20 z-10">
-        <div className="mb-6">
-          <img
-            src="/lovable-uploads/817b4d92-bb22-44fe-9fa9-72332b6a5669.png"
-            alt="Riya Jain"
-            className="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover bg-white"
-          />
-        </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-800 mb-2 text-center">
-          Riya JAIN
-        </h1>
-        <h2 className="text-xl md:text-2xl text-gray-700 font-light mb-8 text-center">
-          <TypewriterEffect text="Full Stack Developer" speed={60} delay={300} />
-        </h2>
-        <div className="flex gap-8 mt-2">
-          <a
-            href="https://www.linkedin.com/in/riyajain8991/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 hover:text-blue-500 transition"
-            aria-label="LinkedIn"
-          >
-            <Linkedin size={28} />
-          </a>
-          <a
-            href="https://github.com/riyajain2008"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-700 hover:text-blue-500 transition"
-            aria-label="GitHub"
-          >
-            <Github size={28} />
-          </a>
+      <div className="relative z-10 text-center section-padding">
+        <div className={`transition-all duration-1000 ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
+          {/* Profile Picture */}
+          <div className="mb-8">
+            <div className="w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-blue-200 shadow-2xl animate-float">
+              <img 
+                src="/lovable-uploads/c8d40b6e-0a52-428a-9bd0-8882524b572b.png" 
+                alt="Riya Jain" 
+                className="w-full h-full object-cover object-top"
+                style={{ objectPosition: 'center 20%' }}
+              />
+            </div>
+          </div>
+
+          {/* Name and Title */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6">
+            <span className="bg-gradient-to-r from-slate-700 to-blue-400 bg-clip-text text-transparent">Riya Jain</span>
+          </h1>
+          
+          <h2 className="text-xl md:text-2xl lg:text-3xl text-slate-600 font-light mb-8 h-12">
+            <TypewriterEffect text="Full Stack Developer" />
+          </h2>
+
+          {/* Tagline */}
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+            Crafting digital experiences with precision and passion. 
+            From concept to deployment, I build scalable solutions that make an impact.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a 
+              href="#"
+              className="px-8 py-4 bg-gradient-to-r from-blue-400 to-blue-300 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg"
+            >
+              Download Resume
+            </a>
+            <button 
+              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-4 border-2 border-blue-400 text-blue-400 rounded-full font-semibold hover:bg-blue-400 hover:text-white transition-colors duration-300 shadow-lg"
+            >
+              View My Work
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -25,12 +25,12 @@ const AuroraBackground = () => {
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Create soft aurora layers with light blue and cream colors
+      // Create soft aurora layers with very light sea blue and cream colors only
       const auroraLayers = [
-        { color: 'rgba(147, 197, 253, 0.08)', speed: 0.002, amplitude: 60, frequency: 0.003 }, // Light blue
-        { color: 'rgba(254, 252, 232, 0.06)', speed: 0.003, amplitude: 40, frequency: 0.004 }, // Cream
-        { color: 'rgba(186, 230, 253, 0.05)', speed: 0.0025, amplitude: 80, frequency: 0.0025 }, // Sky blue
-        { color: 'rgba(255, 255, 255, 0.04)', speed: 0.0015, amplitude: 100, frequency: 0.002 }, // White
+        { color: 'rgba(173, 216, 230, 0.03)', speed: 0.002, amplitude: 60, frequency: 0.003 }, // Very light sea blue
+        { color: 'rgba(255, 253, 250, 0.04)', speed: 0.003, amplitude: 40, frequency: 0.004 }, // Very light cream
+        { color: 'rgba(176, 224, 230, 0.02)', speed: 0.0025, amplitude: 80, frequency: 0.0025 }, // Powder blue
+        { color: 'rgba(255, 255, 255, 0.02)', speed: 0.0015, amplitude: 100, frequency: 0.002 }, // Pure white
       ];
 
       auroraLayers.forEach((layer, index) => {
@@ -39,7 +39,7 @@ const AuroraBackground = () => {
         // Create flowing aurora effect
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
         gradient.addColorStop(0, layer.color);
-        gradient.addColorStop(0.5, layer.color.replace(/[\d\.]+\)$/g, '0.02)'));
+        gradient.addColorStop(0.5, layer.color.replace(/[\d\.]+\)$/g, '0.01)'));
         gradient.addColorStop(1, layer.color);
 
         ctx.fillStyle = gradient;
@@ -64,20 +64,20 @@ const AuroraBackground = () => {
           ctx.lineTo(-100, canvas.height);
           ctx.closePath();
           
-          ctx.globalAlpha = 0.4 - i * 0.1;
+          ctx.globalAlpha = 0.3 - i * 0.1;
           ctx.fill();
         }
       });
 
-      // Add subtle floating particles
-      for (let i = 0; i < 15; i++) {
+      // Add very subtle floating particles
+      for (let i = 0; i < 12; i++) {
         const x = (Math.sin(time * 0.001 + i) * canvas.width) / 2 + canvas.width / 2;
         const y = (Math.cos(time * 0.0015 + i * 0.5) * canvas.height) / 3 + canvas.height / 2;
-        const size = Math.abs(Math.sin(time * 0.002 + i)) * 2 + 1;
+        const size = Math.abs(Math.sin(time * 0.002 + i)) * 1.5 + 0.5;
         
         const particleGradient = ctx.createRadialGradient(x, y, 0, x, y, size * 2);
-        particleGradient.addColorStop(0, 'rgba(147, 197, 253, 0.2)');
-        particleGradient.addColorStop(1, 'rgba(147, 197, 253, 0)');
+        particleGradient.addColorStop(0, 'rgba(173, 216, 230, 0.1)');
+        particleGradient.addColorStop(1, 'rgba(173, 216, 230, 0)');
         
         ctx.fillStyle = particleGradient;
         ctx.beginPath();
